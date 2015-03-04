@@ -1,0 +1,16 @@
+body {
+	background-color: #c4c4c4;
+}
+textarea {
+	display: block;
+	background-color: #fff;
+	font-family: Courier;
+	font-size: 16;
+	border: 0;
+	width: 700px;
+	height: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	outline: none;
+	resize: none;
+}
