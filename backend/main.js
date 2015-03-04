@@ -3,19 +3,17 @@ var gui = require('nw.gui'),
 	fdialogs = require('node-webkit-fdialogs');
 
 //Get the Mac OS X native menubar
-var win = gui.Window.get();
-var nativeMenuBar = new gui.Menu({ type: "menubar" });
-nativeMenuBar.createMacBuiltin("Screenwriter");
-
-var fileItem = new gui.MenuItem({
-	type: 'normal',
-	label: 'File'
-});
-nativeMenuBar.append(fileItem);
-
-win.menu = nativeMenuBar;
-
 $(function(){
+	var win = gui.Window.get();
+	var nativeMenuBar = new gui.Menu({ type: "menubar" });
+	nativeMenuBar.createMacBuiltin("Screenwriter");
+	var file = new gui.Menu();
+	win.menu = nativeMenuBar;
+	win.menu.insert(new gui.MenuItem({ label: 'File', submenu: file}), 1);
+	win.menu.insert(new gui.MenuItem({ label: 'Save as...', submenu: file}));
+	
+	
+
 	$('#save_button').click(function(){
 		var contentString = $('textarea').val(),
 			content = new Buffer(contentString, 'utf-8');
@@ -30,7 +28,9 @@ $(function(){
 		});
 	});
 });
+function saveAs() {
 
+}
 function save(file, savePath) {
 }
 
