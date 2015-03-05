@@ -1,6 +1,7 @@
 var gui = require('nw.gui'),
 	fs = require('fs'),
 	fdialogs = require('node-webkit-fdialogs');
+
 var saveDialog = new fdialogs.FDialog({
 	type: 'save', 
 	accept: ['.sw']
@@ -10,9 +11,16 @@ var saveDialog = new fdialogs.FDialog({
 		accept: ['.sw']
 });
 
+var currentDocument = {
+	title: 'Untitled',
+	path: '~/',
+	pathAndTitle: '~/Untitled.sw',
+	savedAs: false
+};
+
 $(function(){
 	menu();
-
+	document.title = currentDocument.title;
 });
 function saveAs() {
 	var content = getUnsavedContent();
@@ -20,9 +28,25 @@ function saveAs() {
 		if (err) {
 			console.log(err);
 		}
+		currentDocument.pathAndTitle = path;
+		currentDocument.title = getDocumentName(path)[0];
+		currentDocument.savedAs = true;
+		console.log(getDocumentName(path)[0]);
+		document.title = currentDocument.title;
 	});
 }
-function save(file, savePath) {
+	
+function save(file) {
+	if (savedAs){
+		fs.writeFile(file, getUnsavedContent(), function(err){
+			if (err) {
+				console.log(err);
+			}
+		});		
+	} else {
+		saveAs();
+	}
+
 }
 
 function open() {
@@ -60,7 +84,10 @@ function menu(){
 									}));
 	fileMenu.append(new gui.MenuItem({ label: 'Save',
 										key: 's',
-										modifiers: 'cmd'
+										modifiers: 'cmd',
+										click: function(){
+											save(currentDocument.pathAndTitle);
+										}
 									}));
 	fileMenu.append(new gui.MenuItem({ label: 'Open',
 										key: 'o',
@@ -72,4 +99,22 @@ function menu(){
 
 	menubar.insert(file, 1);
 	win.menu = menubar;
+}
+function getDocumentName(filePath) {
+	var fileName;
+	var fileNameWithExtension;
+	for (i = filePath.length - 1; i > 0; i--) {
+		var currentCharacter = filePath[i];
+		if (currentCharacter == '/') {
+			fileNameWithExtension = filePath.substring(i+1, filePath.length);
+			break;
+		}
+	}
+	for (i = 0; i < fileNameWithExtension.length; i++) {
+		var currentCharacter = fileNameWithExtension[i];
+		if (currentCharacter == '.') {
+			fileName = fileNameWithExtension.substring(0, i);
+		}
+	}
+	return [fileName, fileNameWithExtension];
 }
