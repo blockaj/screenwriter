@@ -2,28 +2,43 @@ var gui = require('nw.gui'),
 	fs = require('fs'),
 	fdialogs = require('node-webkit-fdialogs');
 
-//Get the Mac OS X native menubar
 $(function(){
 	var win = gui.Window.get();
-	var nativeMenuBar = new gui.Menu({ type: "menubar" });
-	nativeMenuBar.createMacBuiltin("Screenwriter");
-	var file = new gui.Menu();
-	win.menu = nativeMenuBar;
-	win.menu.insert(new gui.MenuItem({ label: 'File', submenu: file}), 1);
-	win.menu.insert(new gui.MenuItem({ label: 'Save as...', submenu: file}));
-	
-	
+	var menubar = new gui.Menu({ type: 'menubar' });
+	win.showDevTools();
+	console.log(win);
+	menubar.createMacBuiltin('Screenwriter');
+	var file = new gui.MenuItem({ label: 'File' });
+
+	var fileMenu = new gui.Menu({ type: 'contextmenu' });
+	file.submenu = fileMenu;
+	fileMenu.append(new gui.MenuItem({ label: 'New' }));
+	fileMenu.append(new gui.MenuItem({ label: 'Save as...' }));
+	fileMenu.append(new gui.MenuItem({ label: 'Save' }));
+
+	menubar.insert(file, 1);
+	win.menu = menubar;
+	console.log(menubar.items);
+
+	var saveDialog = new fdialogs.FDialog({
+		type: 'save', 
+		accept: ['.sw']
+	}),
+		openDialog = new fdialogs.FDialog({
+			type: 'open',
+			accept: ['.sw']
+	});
 
 	$('#save_button').click(function(){
-		var contentString = $('textarea').val(),
-			content = new Buffer(contentString, 'utf-8');
-			console.log(contentString);
-		fdialogs.saveFile(content, function(err, path){
-			console.log("File saved in ", path);
+		var content = getUnsavedContent()
+		saveDialog.saveFile(content, function(err, path){
+			if (err) {
+				console.log(err);
+			}
 		});
 	});
 	$("#open_button").click(function(){
-		fdialogs.readFile(function(err, data, path){
+		openDialog.readFile(function(err, data, path){
 			$("textarea").text(data);
 		});
 	});
@@ -40,5 +55,7 @@ function open(fileWithPath) {
 
 function getUnsavedContent() {
 	var content;
-	return content;
+	content = $('textarea').val();
+	contentBuffer = new Buffer(content, 'utf-8');
+	return contentBuffer;
 }
