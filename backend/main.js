@@ -2,6 +2,7 @@ var gui = require('nw.gui'),
 	fs = require('fs'),
 	fdialogs = require('node-webkit-fdialogs');
 
+
 var saveDialog = new fdialogs.FDialog({
 	type: 'save', 
 	accept: ['.sw']
@@ -18,9 +19,13 @@ var currentDocument = {
 	savedAs: false
 };
 
+var lineFormat;
+
 $(function(){
+	lineFormat = 'sh';
 	menu();
 	document.title = currentDocument.title;
+	formatText();
 });
 function saveAs() {
 	var content = getUnsavedContent();
@@ -37,7 +42,7 @@ function saveAs() {
 }
 	
 function save(file) {
-	if (savedAs){
+	if (currentDocument.savedAs){
 		fs.writeFile(file, getUnsavedContent(), function(err){
 			if (err) {
 				console.log(err);
@@ -51,13 +56,16 @@ function save(file) {
 
 function open() {
 	openDialog.readFile(function(err, data, path){
-		$("textarea").text(data);
+		$(".inner-page").text(data);
 	});
 }
-
+function newDoc() {
+	var newWin = gui.Window.open('../frontend/main.html');
+}
 function getUnsavedContent() {
 	var content;
-	content = $('textarea').val();
+	content = $('.inner-page').html();
+	console.log(content);
 	contentBuffer = new Buffer(content, 'utf-8');
 	return contentBuffer;
 }
@@ -73,7 +81,10 @@ function menu(){
 	file.submenu = fileMenu;
 	fileMenu.append(new gui.MenuItem({ label: 'New',
 										key: 'n',
-										modifiers: 'cmd' 
+										modifiers: 'cmd',
+										click: function() {
+											newDoc();
+										}
 									}));
 	fileMenu.append(new gui.MenuItem({ label: 'Save as...',
 									   key: 's',
@@ -117,4 +128,24 @@ function getDocumentName(filePath) {
 		}
 	}
 	return [fileName, fileNameWithExtension];
+}
+
+function isOverflowed(element) {
+	return element.scrollHeight > element.clientHeight;
+}
+
+function formatText() {
+	var sceneHeading = $('.scene-heading').text();
+	sceneHeading = sceneHeading.toUpperCase();
+	$('.scene-heading').text(sceneHeading);
+
+	var character = $('.character').text();
+	character = character.toUpperCase();
+	$('.character').text(character);
+
+	$('.parenthetical').prepend('(');
+	$('.parenthetical').append(')');
+}
+function formatToJSON() {
+	
 }
