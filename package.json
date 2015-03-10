@@ -3,9 +3,8 @@
 	"main": "./frontend/html/main.html",
 	"version": "0.0.0",
 	"window": {
-		"title": "Screenwriter",
 		"toolbar": false,
-		"width": 500,
-		"height": 600
+		"width": 768,
+		"height": 650
 	}
 }
