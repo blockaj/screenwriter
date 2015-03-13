@@ -3,8 +3,7 @@ var gui = require('nw.gui'),
 	fdialogs = require('node-webkit-fdialogs'),
 	_ = require('lodash'),
 	VerEx = require('verbal-expressions');
-var classVer = VerEx().find('class="').anything().then('"');
-
+var endOfClass = VerEx().find('class="').anything().then('">');
 var lineFormat;
 
 var saveDialog = new fdialogs.FDialog({
@@ -22,14 +21,11 @@ var currentDocument = {
 	pathAndTitle: '~/Untitled.sw',
 	savedAs: false
 };
-
 $(function(){
-	lineFormat = 'sh';
 	menu();
 	document.title = currentDocument.title;
-	formatText();
 	formatToJSON();
-	formatInApp();
+	formatText();
 });
 function saveAs() {
 	var content = getUnsavedContent();
@@ -60,6 +56,7 @@ function save(file) {
 
 function open() {
 	openDialog.readFile(function(err, data, path){
+		data = data.toString();
 		htmlData = formatToHTML(data);
 		console.log(htmlData);
 		$(".inner-page").html(htmlData);
@@ -78,6 +75,7 @@ function getUnsavedContent() {
 
 function menu(){
 	var win = gui.Window.get();
+	console.log(win);
 	var menubar = new gui.Menu({ type: 'menubar' });
 	win.showDevTools();
 	menubar.createMacBuiltin('Screenwriter');
@@ -85,13 +83,21 @@ function menu(){
 
 	var fileMenu = new gui.Menu({ type: 'contextmenu' });
 	file.submenu = fileMenu;
-	fileMenu.append(new gui.MenuItem({ label: 'New',
+	fileMenu.append(new gui.MenuItem({ label: 'New...',
 										key: 'n',
 										modifiers: 'cmd',
 										click: function() {
 											newDoc();
 										}
 									}));
+	fileMenu.append(new gui.MenuItem({ label: 'Open...',
+										key: 'o',
+										modifiers: 'cmd',
+										click: function() {
+											open();
+										}
+									}));
+	fileMenu.append(new gui.MenuItem({ type: 'separator' }));
 	fileMenu.append(new gui.MenuItem({ label: 'Save as...',
 									   key: 's',
 									   modifiers: 'cmd shift',
@@ -106,13 +112,14 @@ function menu(){
 											save(currentDocument.pathAndTitle);
 										}
 									}));
-	fileMenu.append(new gui.MenuItem({ label: 'Open',
-										key: 'o',
+	fileMenu.append(new gui.MenuItem({ type: 'separator' }));
+	fileMenu.append(new gui.MenuItem({ label: 'Print',
+										key: 'p',
 										modifiers: 'cmd',
-										click: function() {
-											open();
-										}
-									}));
+										click: function(){
+											alert('Printing...');
+										}}))
+
 
 	menubar.insert(file, 1);
 	win.menu = menubar;
@@ -134,77 +141,4 @@ function getDocumentName(filePath) {
 		}
 	}
 	return [fileName, fileNameWithExtension];
-}
-
-function isOverflowed(element) {
-	return element.scrollHeight > element.clientHeight;
-}
-
-var keyTimer = null, keyDelay = 500;
-
-function formatText() {
-	if(keyTimer) {
-		keyTimer = window.clearTimeout(keyTimer);
-	}
-	keyTimer = window.setTimeout(function() {
-		keyTimer = null;
-		$('.inner-page').html('<p class="' + lineFormat + '">' + $('.inner-page').text() + '</p>');
-	}, keyDelay);
-		
-	$('.parenthetical').prepend('(');
-	$('.parenthetical').append(')');
-}
-function formatToJSON() {
-	var scenes = [];
-	var i = -1; 
-	var innerPage = $('.inner-page');
-	innerPage = innerPage[0].children;
-	_.forEach(innerPage, function(p){
-		className = p.className;
-		if (className == 'scene-heading') {
-			i++;
-			scenes[i] = {};
-			scenes[i].sceneHeading = p.innerText;
-		} else if (className == 'action') {
-			scenes[i].action = p.innerText;
-
-		} else if (className == 'dialogue character') {
-			scenes[i].character = p.innerText;
-
-		} else if (className == 'dialogue parenthetical') {
-			scenes[i].parenthetical = p.innerText;
-
-		} else if (className == 'dialogue speech') {
-			scenes[i].speech = p.innerText;
-		}
-	});
-	return scenes;
-}
-function formatToHTML(file) {
-	var htmlFile = "";
-	file = JSON.parse(file);
-	_.forEach(file, function(scene){
-		if(scene.sceneHeading) {
-			htmlFile = htmlFile.concat('<p class="scene-heading">' + scene.sceneHeading + '</p>');
-		} 
-		if (scene.action) {
-			htmlFile = htmlFile.concat('<p class="action">' + scene.action + '</p>');
-		} 
-		if (scene.character) {
-			htmlFile = htmlFile.concat('<p class="dialogue character">' + scene.character + '</p>');
-		}
-		if (scene.parenthetical) {
-			htmlFile = htmlFile.concat('<p class="dialogue parenthetical">' + scene.parenthetical + '</p>');
-		}
-		if (scene.speech) {
-			htmlFile = htmlFile.concat('<p class="dialogue speech">' + scene.speech + '</p>');
-		}
-	});
-	return htmlFile;
-}
-function formatInApp() {
-	var innerPage = $('inner-page');
-	if (innerPage.length == 0){
-		lineFormat = 'scene-heading';
-	}
 }
