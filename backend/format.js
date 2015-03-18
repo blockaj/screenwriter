@@ -2,8 +2,7 @@ function formatText() {
 	var lineFormat;
 	var innerPage = $('.inner-page');
 	var selStart = '<p class="scene-heading"></p>'.indexOf('>');
-	window.selectionStart = selStart + 1;
-	window.selectionEnd = window.selectionStart + 1;
+
 	$('.parenthetical').prepend('(');
 	$('.parenthetical').append(')');
 	if (!lineFormat) {
@@ -12,16 +11,25 @@ function formatText() {
 	innerPage.keypress(function(e){
 		console.log('finding ');
 		if (e.keyCode == 13) {
+			e.preventDefault();
 			if (lineFormat == 'scene-heading') {
 				lineFormat = 'action';
 			} else if (lineFormat == 'action') {
-				lineFormat = 'scene-heading';
+				if ($('.action').text() == '') {
+					lineFormat = 'scene-heading';
+				}
 				console.log(lineFormat);
 			} else if (lineFormat == 'character') {
 				lineFormat = 'speech';
+			} else if (lineFormat == 'speech') {
+				lineFormat = 'character';
 			}
+			createNewElementWithFormat(lineFormat);
 		}
 		console.log('Key pressed:', e.keyCode);
+
+	});
+	innerPage.keydown(function(e){
 		if (e.keyCode == 9) {
 			e.preventDefault();
 			console.log('Tab key');
@@ -31,11 +39,23 @@ function formatText() {
 			if (lineFormat == 'action') {
 				lineFormat = 'character';
 			}
+			createNewElementWithFormat(lineFormat);
 		}
 	});
-	console.log('<p class="' + lineFormat + '"><br></p>');
 	innerPage.append('<p class="' + lineFormat + '"><br></p>');
-
+	console.log('<p class="' + lineFormat + '"><br></p>');
+}
+function createNewElementWithFormat(inputFormat) {
+	var innerPage = $('.innerPage');
+	innerPage.append('<p class="' + inputFormat + '"><br></p>');
+	var lineSelector = '.' + inputFormat;
+	var nodeContents = $(lineSelector).last()[0];
+	var range = document.createRange();
+	range.selectNodeContents(nodeContents);
+	range.collapse(true);
+	var sel = window.getSelection();
+	sel.removeAllRanges();
+	sel.addRange(range);
 }
 function formatToJSON() {
 	var file = {};
@@ -80,6 +100,7 @@ function formatToJSON() {
 	return file;
 }
 function formatToHTML(file) {
+	var characterList = [];
 	var htmlFile = "";
 	try {
 		file = JSON.parse(file);
@@ -97,6 +118,15 @@ function formatToHTML(file) {
 		} 
 		if (scene.type == 'character') {
 			htmlFile = htmlFile.concat('<p class="dialogue character">' + scene.text + '</p>');
+			var characterExists = false;
+			_.forEach(characterList, function(character){	
+				if (scene.text == character) {
+					characterExists = true;
+				}
+			});
+			if (!characterExists) {
+				characterList.push(scene.text);
+			}
 		}
 		if (scene.type == 'paranthetical') {
 			htmlFile = htmlFile.concat('<p class="dialogue parenthetical">' + scene.text + '</p>');

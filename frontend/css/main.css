@@ -12,8 +12,8 @@ body {
 }
 .inner-page {
 	font-family: Courier;
-	font-size: 16;
-	width: 720px;
+	font-size: 12pt;
+	width: 624px;
 	height: 960px;
 	outline: none;
 	resize: none;
@@ -21,6 +21,8 @@ body {
 	display:block;
 	margin: auto;
 	padding-top:96px;
+	padding-bottom: 96px;
+	overflow:hidden;
 
 }
 .scene-heading {
