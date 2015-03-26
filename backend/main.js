@@ -75,7 +75,8 @@ function getUnsavedContent() {
 
 function menu(){
 	var win = gui.Window.get();
-	console.log(win);
+	win.position = 'center';
+	win.y = 30;
 	var menubar = new gui.Menu({ type: 'menubar' });
 	win.showDevTools();
 	menubar.createMacBuiltin('Screenwriter');
