@@ -1,4 +1,3 @@
-
 function formatText() {
 	var index = 0;
 
