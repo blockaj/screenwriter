@@ -1,0 +1,110 @@
+<html>
+	<head>
+		<title>Screenwriter</title>
+		<link href='http://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="frontend/css/reset.css">
+		<script src="backend/jquery-2.1.3.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.1.0/tabletop.min.js"></script>
+
+		<script>
+			$(function(){
+				$.get('http://api.github.com/repos/blockaj/screenwriter/commits', function(data){
+					console.log(data);
+					for (var i = 0; i < 10; i++) {
+						var commitObject = data[i];
+						$('ul').append('<a href="' + commitObject.html_url + '">' + '<li>' + commitObject.commit.message + '</li></a>');
+					}
+				});
+			});
+			document.addEventListener('DOMContentLoaded', function(){
+				var gData;
+				var url = '1dt5v7mJb6OHrWHQ5MRkwmcX6Rqi67uLDDBfhfcG1Qs4';
+				Tabletop.init({ key: url, callback: callback, simpleSheet: true });
+				function callback(data) {
+					console.log(data);
+				}
+			});
+		</script>
+		<style>
+			body {
+				background-color: #EDEDED;
+			}
+			header {
+				text-align: center;
+			}
+			.header {
+				height: 300px;
+			}
+			.bg-gray {
+				background-color: #363636;
+				color: #ededed;
+			}
+			h1 a {
+				font-family: Courier;
+				margin-top: 50%;
+				text-decoration: none;
+				color: inherit;
+				font-size: 5em;
+			}
+			header p {
+				font-style: oblique;
+				font-family: "Open Sans";
+				font-size: 1.5em;
+			}
+			.main-body {
+				width: 90%;
+				margin-left: auto;
+				margin-right: auto;
+				padding-top: 10px;
+			}
+			h2 {
+				text-align: center;
+				text-transform: uppercase;
+				font-family: "Open Sans";
+				font-weight: 700;
+				font-size: 2em;
+			}
+			li {
+				display: inline-block;
+				width: 300px;
+				height: 70px;
+				background-color: #fff;
+				text-align: center;
+				margin: 5px;
+				padding-top: 50px;
+			}
+			a li {
+				font-family: "Open Sans";
+				text-decoration: none;
+				color: #363636;
+				-webkit-transition: all 0.3s ease;
+				-moz-transition: all 0.3s ease;
+				-o-transition: all 0.3s ease;
+				transition: all 0.3s ease;
+			}
+			li:hover {
+				background-color: #363636;
+				color: #ededed;
+			}
+			p {
+				font-family: "Open Sans";
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<div class="bg-gray header">
+				<h1><a href="/">Screenwriter</a></h1>
+				<p>Simple, open-source</p>
+			</div>
+		</header>
+		<div class="bg-white main-body">
+			<h2>Recent commits</h2>
+			<ul>
+			</ul>
+			<h2>Progress</h2>
+			<iframe height="700px" width="100%" src="https://docs.google.com/spreadsheets/d/1dt5v7mJb6OHrWHQ5MRkwmcX6Rqi67uLDDBfhfcG1Qs4/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+		</div>
+	</body>
+</html>
