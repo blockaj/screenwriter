@@ -1,15 +1,16 @@
 function formatToJSON() {
 	var file = {};
 	file.scenes = [];
-	scenes = file.scenes;
 	var innerPage = $('.inner-page');
 	innerPage = innerPage[0].children;
 
 	//Loop through every p-tag in inner-page class
 	_.forEach(innerPage, function(p){
 		var className = p.className;
+		console.log(className);
 		var index = p.dataset.index;
 		var jsonClass = htmlClassToJSON(className);
+		console.log(jsonClass);
 		//JSON object holding one line in the screenplay
 		var newItem = {
 			'type': jsonClass,
@@ -17,8 +18,9 @@ function formatToJSON() {
 			'index': index
 		};
 
-		scenes.push(newItem);
+		file.scenes.push(newItem);
 	});
+	console.log(file);
 	return file;
 }
 
@@ -31,38 +33,29 @@ function formatToHTML(file) {
 	catch(e) {
 		console.trace(e);
 	}
-	_.forEach(file.scenes, function(scene){
-		console.log(scene);
-		if(scene.type == 'sceneHeading') {
-			htmlFile = htmlFile.concat('<p class="scene-heading" data-index="' + scene.index + '">' + scene.text + '</p>');
+	_.forEach(file.scenes, function(line){
+		console.log(line);
+		if(line.type == 'sceneHeading') {
+			htmlFile = htmlFile.concat('<p class="scene-heading" data-index="' + line.index + '">' + line.text + '</p>');
 		} 
-		if (scene.type == 'action') {
-			htmlFile = htmlFile.concat('<p class="action">' + scene.text + '</p>');
+		if (line.type == 'action') {
+			htmlFile = htmlFile.concat('<p class="action" data-index="' + line.index + '">' + line.text + '</p>');
 		} 
-		if (scene.type == 'character') {
-			htmlFile = htmlFile.concat('<p class="dialogue character">' + scene.text + '</p>');
+		if (line.type == 'character') {
+			htmlFile = htmlFile.concat('<p class="character" data-index="' + line.index + '">' + line.text + '</p>');
 			var characterExists = false;
-			_.forEach(characterList, function(character){	
-				if (scene.text == character) {
-					characterExists = true;
-				}
-			});
-			if (!characterExists) {
-				characterList.push(scene.text);
-			}
 		}
-		if (scene.type == 'paranthetical') {
-			htmlFile = htmlFile.concat('<p class="dialogue parenthetical">' + scene.text + '</p>');
+		if (line.type == 'paranthetical') {
+			htmlFile = htmlFile.concat('<p class="parenthetical" data-index="' + line.index + '">' + line.text + '</p>');
 		}
-		if (scene.type == 'speech') {
-			htmlFile = htmlFile.concat('<p class="dialogue speech">' + scene.text + '</p>');
+		if (line.type == 'speech') {
+			htmlFile = htmlFile.concat('<p class="speech" data-index="' + line.index + '">' + line.text + '</p>');
 		}
 	});
 	return htmlFile;
 }
 function htmlClassToJSON(htmlClass) {
 	var jsonClass;
-
 	//Reassigns name appropriate for JSON according to element class
 	switch(htmlClass) {
 		case 'scene-heading':
@@ -71,13 +64,13 @@ function htmlClassToJSON(htmlClass) {
 		case 'action':
 			jsonClass = 'action';
 			break;
-		case 'dialogue character':
+		case 'character':
 			jsonClass = 'character';
 			break;
-		case 'dialogue parenthetical':
+		case 'parenthetical':
 			jsonClass = 'parenthetical';
 			break;
-		case 'dialogue speech':
+		case 'speech':
 			jsonClass = 'speech';
 			break;
 	}
