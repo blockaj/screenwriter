@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<title> Screenwriter | For Developers </title>
+		<link rel="stylesheet" href="reset.css">
+		<link rel="stylesheet" href="style.css">
+		<script src="jquery-2.1.3.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.1.0/tabletop.min.js"></script>
+
+		<script>
+			$(function(){
+				$.get('http://api.github.com/repos/blockaj/screenwriter/commits', function(data){
+					console.log(data);
+					for (var i = 0; i < 10; i++) {
+						var commitObject = data[i];
+						var commitMessage = commitObject.commit.message;
+						if (commitMessage.length > 44) {
+							commitMessage = commitMessage.substring(0, 44);
+							commitMessage = commitMessage.concat('...');
+						}
+						$('ul').append('<a href="' + commitObject.html_url + '">' + '<li>' + commitMessage + '</li></a>');
+					}
+				});
+			});
+			document.addEventListener('DOMContentLoaded', function(){
+				var gData;
+				var url = '1dt5v7mJb6OHrWHQ5MRkwmcX6Rqi67uLDDBfhfcG1Qs4';
+				Tabletop.init({ key: url, callback: callback, simpleSheet: true });
+				function callback(data) {
+					console.log(data);
+				}
+			});
+		</script>
+	</head>
+	<body>
+	<div class="small-header">
+		<a href="/screenwriter"><h1>Screenwriter</h1></a>
+	</div>
+	<div class="bg-white main-body">
+			<h2>Recent commits</h2>
+			<ul>
+			</ul>
+			<h2>Progress</h2>
+	</body>
+</html>

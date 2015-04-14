@@ -1,0 +1,84 @@
+@import url(http://fonts.googleapis.com/css?family=PT+Mono);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:600italic,700italic,400,600,700);
+
+body {
+		background-color: #EDEDED;
+	}
+header {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+.header {
+	height: 100%;
+}
+.bg-gray {
+	background-color: #363636;
+	color: #DAD9F9;
+}
+h1 {
+	padding-top: 15%;
+}
+h1 a {
+	font-family: Courier;
+	margin-top: 50%;
+	text-decoration: none;
+	color: inherit;
+	font-size: 5em;
+}
+header p {
+	font-style: oblique;
+	font-family: "Open Sans";
+	font-size: 1.5em;
+}
+.main-body {
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 10px;
+}
+h2 {
+	text-align: center;
+	text-transform: uppercase;
+	font-family: "Open Sans";
+	font-weight: 700;
+	font-size: 2em;
+}
+li {
+	display: inline-block;
+	width: 300px;
+	height: 70px;
+	background-color: #fff;
+	text-align: center;
+	margin: 5px;
+	padding-top: 50px;
+}
+a li {
+	font-family: "Open Sans";
+	text-decoration: none;
+	color: #363636;
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+}
+li:hover {
+	background-color: #363636;
+	color: #ededed;
+}
+p {
+	font-family: "Open Sans";
+}
+.small-header h1 {
+	padding-top: 0;
+	font-family: Courier;
+	font-size: 2em;
+	text-align: center;
+	line-height: 100px;
+}
+.small-header{
+	height: 100px;
+	background-color: #363636;
+	color: #ededed;
+}
