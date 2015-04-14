@@ -14,7 +14,9 @@ function formatText() {
 	}
 
 	innerPage.click(function(){
+
 		lineFormat = currentElement()[0].className;
+
 		console.log(lineFormat);
 	});
 
@@ -35,10 +37,14 @@ function formatText() {
 			} 
 
 			else if (lineFormat == 'character') {
+
 				console.log($('.character[data-index="' + index + '"]').text());
+
 				if ($('.character[data-index="' + index + '"]').text() === '') {
 					lineFormat = 'action';
-				} else {
+				} 
+
+				else {
 					console.log($('.character[data-index="' + index + '"]').text());
 					lineFormat = 'speech';
 				}
@@ -82,6 +88,7 @@ function createNewElementWithFormat(inputFormat, dataIndex) {
 	prevTag.after('<p data-index="' + dataIndex + '" class="' + inputFormat + '"><br></p>');
 	console.log('Appended tag with index: ' + dataIndex);
 	moveCursor(dataIndex);
+	console.log(dataIndex);
 	return dataIndex;
 }
 function convertElementToFormat(inputFormat) {
@@ -108,11 +115,13 @@ function moveCursor(index) {
 function currentElement() {
 	var sel = window.getSelection();
 	var	node = sel.anchorNode;
+
 	if (node.textContent !== "") {
 		node = sel.anchorNode.parentElement;
 		console.log(node);
 	}
 	//Return jQuery object so it can be used with jQuery .after() 
 	var jObject = $('[data-index="' + node.dataset.index + '"]');
+	console.log(jObject);
 	return jObject;
 }
