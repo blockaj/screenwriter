@@ -1,0 +1,10 @@
+{
+	"name": "Screenwriter",
+	"main": "./frontend/html/main.html",
+	"version": "0.0.0",
+	"window": {
+		"toolbar": false,
+		"width": 816,
+		"height": 660
+	}
+}
