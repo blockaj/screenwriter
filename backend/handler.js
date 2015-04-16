@@ -12,12 +12,12 @@ function formatText() {
 	if (!lineFormat) {
 		lineFormat = 'scene-heading';
 	}
-
+	$('.footer').text(lineFormat);
 	innerPage.click(function(){
 
 		lineFormat = currentElement()[0].className;
 
-		console.log(lineFormat);
+		$('.footer').text(lineFormat);
 	});
 
 	innerPage.keypress(function(e){
@@ -31,7 +31,8 @@ function formatText() {
 			} 
 
 			else if (lineFormat == 'action') {
-				if ($('.action').text() === '') {
+				console.log($('.action').html());
+				if ($('[data-index="' + index + '"]').text() === '') {
 					lineFormat = 'scene-heading';
 				}
 			} 
@@ -55,6 +56,7 @@ function formatText() {
 			}
 			
 			index = createNewElementWithFormat(lineFormat, index);
+			$('.footer').text(lineFormat);
 		}
 	});
 
@@ -74,6 +76,7 @@ function formatText() {
 			}
 			convertElementToFormat('character');
 			//index = createNewElementWithFormat(lineFormat, index);
+			$('.footer').text(lineFormat);
 		}
 	});
 
@@ -110,6 +113,7 @@ function moveCursor(index) {
 	var sel = window.getSelection();
 	sel.removeAllRanges();
 	sel.addRange(range);
+	$('.footer').text(lineFormat);
 }
 
 function currentElement() {
