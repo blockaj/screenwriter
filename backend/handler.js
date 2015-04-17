@@ -16,7 +16,7 @@ function formatText() {
 	innerPage.click(function(){
 
 		lineFormat = currentElement()[0].className;
-
+		index = currentElement()[0].dataset.index;
 		$('.footer').text(lineFormat);
 	});
 
@@ -91,7 +91,6 @@ function createNewElementWithFormat(inputFormat, dataIndex) {
 	prevTag.after('<p data-index="' + dataIndex + '" class="' + inputFormat + '"><br></p>');
 	console.log('Appended tag with index: ' + dataIndex);
 	moveCursor(dataIndex);
-	console.log(dataIndex);
 	return dataIndex;
 }
 function convertElementToFormat(inputFormat) {
