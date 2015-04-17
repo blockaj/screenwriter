@@ -39,6 +39,9 @@ function open() {
 		console.log(htmlData);
 		$(".inner-page").html(htmlData);
 		document.title = getDocumentName(path)[0];
+		currentDocument.title = getDocumentName(path)[0];
+		currentDocument.pathAndTitle = getDocumentName(path)[1]; 
+		currentDocument.savedAs = true;
 	});
 }
 function newDoc() {
