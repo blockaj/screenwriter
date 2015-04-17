@@ -7,7 +7,7 @@ p {
 	margin-top: 5px;
 }
 .page {
-	padding-left: 1.235in;
+	padding-left: .824in;
 	padding-right: .824in;
 	padding-top: .824in;
 	padding-bottom: .824in;
@@ -16,6 +16,8 @@ p {
 	margin-left: auto;
 	margin-right: auto;
 	background-color: #fff;
+	box-shadow: -1px -1px 1px black, 1px 0px 1px black;
+	margin-bottom: 10px;
 }
 .scene-heading {
 	background-color: #BCBCBC;
