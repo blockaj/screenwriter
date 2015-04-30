@@ -17,8 +17,12 @@ var saveDialog = new fdialogs.FDialog({
 
 
 $(function(){
+	$('.character').autocomplete({
+		source: ['Arnie', 'Alvin']
+	});
 	menu();
 	document.title = currentDocument.title;
 	formatToJSON();
 	formatText();
+	giveCharacterSuggestions();
 });

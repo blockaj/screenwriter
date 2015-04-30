@@ -11,13 +11,17 @@ p {
 	padding-right: .824in;
 	padding-top: .824in;
 	padding-bottom: .824in;
-	height: 9.06in;
+	min-height: 9.06in;
 	width: 7in;
 	margin-left: auto;
 	margin-right: auto;
 	background-color: #fff;
 	box-shadow: -1px -1px 1px black, 1px 0px 1px black;
 	margin-bottom: 10px;
+}
+.inner-page {
+	width: inherit;
+	min-height: inherit;
 }
 .scene-heading {
 	background-color: #BCBCBC;

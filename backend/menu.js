@@ -44,7 +44,13 @@ function menu(){
 										modifiers: 'cmd',
 										click: function(){
 											alert('Printing...');
-										}}))
+										}}));
+	fileMenu.append(new gui.MenuItem({ label: 'Export',
+										key: 'e',
+										modifiers: 'cmd',
+										click: function() {
+											alert('Exporting...');
+										}}));
 
 
 	menubar.insert(file, 1);

@@ -4,7 +4,10 @@
 		<link rel="stylesheet" href="../css/reset.css" />
 		<link rel="stylesheet" href="../css/main.css" />
 		<script src="../../backend/jquery-2.1.3.min.js"></script>
+		<script src="../../backend/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 		<script src="../../backend/format.js"></script>
+		<script src="../../backend/suggestions.js"></script>
+		<script src="../../backend/pagination.js"></script>
 		<script src="../../backend/documents.js"></script>
 		<script src="../../backend/handler.js"></script>
 		<script src="../../backend/menu.js"></script>
@@ -15,12 +18,14 @@
 		</script>
 	</head>
 	<body>
-		<div class="page">
-			<div class="inner-page" contenteditable="true">
+		<div class="document-container">
+			<div class="page" data-pageNumber="1">
+				<div class="inner-page" id="inner" contenteditable="true">
+				</div>
 			</div>
 		</div>
 		<div class="footer">
-		I pooped.
+			[line_format]
 		</div>
 	</body>
 </html>
