@@ -6,6 +6,7 @@ var currentDocument = {
 };
 
 
+
 //Saves file with dialog for name and directory
 function saveAs() {
 	var content = getUnsavedContent();
@@ -32,7 +33,6 @@ function save(file) {
 	} else {
 		saveAs();
 	}
-
 }
 
 
@@ -78,7 +78,7 @@ function getDocumentName(filePath) {
 	var fileName;
 	var fileNameWithExtension;
 
-	//Tracks backwards through entire function path until the first '/'
+	//Tracks backwards through entire file path until the first '/'
 	//at which point it creates a substring starting right after the first '/'
 	//it finds
 	for (i = filePath.length - 1; i > 0; i--) {

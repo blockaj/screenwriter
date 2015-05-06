@@ -25,4 +25,6 @@ $(function(){
 	formatToJSON();
 	formatText();
 	giveCharacterSuggestions();
+	newElement();
+	console.log($('.inner-page'));
 });

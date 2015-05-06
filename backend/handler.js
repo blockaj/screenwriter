@@ -6,7 +6,7 @@ function formatText() {
 	var lineFormat;
 
 	var innerPage = $('.inner-page');
-
+	
 	$('.parenthetical').prepend('(');
 
 	$('.parenthetical').append(')');
@@ -24,8 +24,6 @@ function formatText() {
 	innerPage.keypress(function(e){
 
 		if (e.keyCode == 13) {
-			
-
 			e.preventDefault();
 
 			if (lineFormat == 'scene-heading') {
@@ -39,19 +37,19 @@ function formatText() {
 			} 
 
 			else if (lineFormat == 'character') {
-
-
 				if ($('.character[data-index="' + index + '"]').text() === '') {
 					lineFormat = 'action';
-				} 
-
-				else {
+				} else {
 					lineFormat = 'speech';
 				}
 			} 
 
 			else if (lineFormat == 'speech') {
-				lineFormat = 'character';
+				if ($('.speech[data-index="' + index + '"]').text() === '') {
+					lineFormat = 'action';
+				} else {
+					lineFormat = 'character';
+				}
 			}
 			
 			index = createNewElementWithFormat(lineFormat, index);
@@ -72,11 +70,15 @@ function formatText() {
 			if (lineFormat == 'action') {
 				lineFormat = 'character';
 			}
+
+			//On tab click the current line should be converted to a new format
+			//A new element should NOT be created 
 			convertElementToFormat('character');
 			$('.footer').text(lineFormat);
 		}
 	});
 
+	//The first line of every document
 	innerPage.append('<p data-index=' + index + ' class="' + lineFormat + '"><br></p>');
 }
 
@@ -128,10 +130,13 @@ function moveCursor(index) {
 function currentElement() {
 	var sel = window.getSelection();
 	var	node = sel.anchorNode;
-
+	if (!node) {
+		return null;
+	}
 	if (node.textContent !== "") {
 		node = sel.anchorNode.parentElement;
 	}
+
 	//Return jQuery object so it can be used with jQuery .after() 
 	var jObject = $('[data-index="' + node.dataset.index + '"]');
 	return jObject;
@@ -143,19 +148,4 @@ function currentElement() {
 //jQuery object
 function jQueryToElement(jQueryObject) {
 	return jQueryObject[0];
-}
-
-
-
-//Set the innerPage variable to the last page
-function setInnerPage() {
-	var lastPage = $('.page').last();
-	var innerPage = lastPage.find('.inner-page');
-	return innerPage;
-}
-
-
-
-function elementCreated(lineFormat) {
-	if (lineF)
 }
