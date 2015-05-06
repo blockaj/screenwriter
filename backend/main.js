@@ -24,7 +24,6 @@ $(function(){
 	document.title = currentDocument.title;
 	formatToJSON();
 	formatText();
-	giveCharacterSuggestions();
 	newElement();
 	console.log($('.inner-page'));
 });
