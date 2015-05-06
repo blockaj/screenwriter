@@ -14,6 +14,9 @@ function formatText() {
 	if (!lineFormat) {
 		lineFormat = 'scene-heading';
 	}
+
+
+	//Set lineFormat in footer on start-up
 	$('.footer').text(lineFormat);
 	innerPage.click(function(){
 		lineFormat = jQueryToElement(currentElement()).className;
@@ -39,6 +42,8 @@ function formatText() {
 			else if (lineFormat == 'character') {
 				if ($('.character[data-index="' + index + '"]').text() === '') {
 					lineFormat = 'action';
+					convertElementToFormat(lineFormat);
+					return "";
 				} else {
 					lineFormat = 'speech';
 				}
@@ -92,6 +97,9 @@ function createNewElementWithFormat(inputFormat, dataIndex) {
 	dataIndex++;
 	prevTag.after('<p contenteditable="true" data-index="' + dataIndex + '" class="' + inputFormat + '"><br></p>');
 	moveCursor(dataIndex);
+	if (inputFormat == 'character') {
+		giveCharacterSuggestions(currentElement());
+	}
 	return dataIndex;
 }
 
@@ -112,7 +120,6 @@ function convertElementToFormat(inputFormat) {
 //based on their index provided as an agrument
 function moveCursor(index) {
 	var innerPage = $('.inner-page');
-	console.log(innerPage);
 	var nodeContents = innerPage.find('p[data-index="' + index + '"]');
 	var range = document.createRange();
 	range.selectNodeContents(nodeContents[0]);
@@ -129,6 +136,7 @@ function moveCursor(index) {
 //in a jQuery object
 function currentElement() {
 	var sel = window.getSelection();
+	console.log(sel);
 	var	node = sel.anchorNode;
 	if (!node) {
 		return null;
