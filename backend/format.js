@@ -7,10 +7,8 @@ function formatToJSON() {
 	//Loop through every p-tag in inner-page class
 	_.forEach(innerPage, function(p){
 		var className = p.className;
-		console.log(className);
 		var index = p.dataset.index;
 		var jsonClass = htmlClassToJSON(className);
-		console.log(jsonClass);
 		//JSON object holding one line in the screenplay
 		var newItem = {
 			'type': jsonClass,
@@ -20,9 +18,10 @@ function formatToJSON() {
 
 		file.scenes.push(newItem);
 	});
-	console.log(file);
 	return file;
 }
+
+
 
 function formatToHTML(file) {
 	var characterList = [];
@@ -34,7 +33,6 @@ function formatToHTML(file) {
 		console.trace(e);
 	}
 	_.forEach(file.scenes, function(line){
-		console.log(line);
 		if(line.type == 'sceneHeading') {
 			htmlFile = htmlFile.concat('<p class="scene-heading" data-index="' + line.index + '">' + line.text + '</p>');
 		} 
@@ -54,6 +52,9 @@ function formatToHTML(file) {
 	});
 	return htmlFile;
 }
+
+
+
 function htmlClassToJSON(htmlClass) {
 	var jsonClass;
 	//Reassigns name appropriate for JSON according to element class
@@ -76,3 +77,4 @@ function htmlClassToJSON(htmlClass) {
 	}
 	return jsonClass;
 }
+

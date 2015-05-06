@@ -1,10 +1,12 @@
+//Handles the line formatting based on cursor position
+//and buttons pressed
 function formatText() {
 	var index = 0;
 
 	var lineFormat;
 
 	var innerPage = $('.inner-page');
-
+	
 	$('.parenthetical').prepend('(');
 
 	$('.parenthetical').append(')');
@@ -14,16 +16,14 @@ function formatText() {
 	}
 	$('.footer').text(lineFormat);
 	innerPage.click(function(){
-
-		lineFormat = currentElement()[0].className;
-
+		lineFormat = jQueryToElement(currentElement()).className;
+		index = jQueryToElement(currentElement()).dataset.index;
 		$('.footer').text(lineFormat);
 	});
 
 	innerPage.keypress(function(e){
 
 		if (e.keyCode == 13) {
-
 			e.preventDefault();
 
 			if (lineFormat == 'scene-heading') {
@@ -31,28 +31,25 @@ function formatText() {
 			} 
 
 			else if (lineFormat == 'action') {
-				console.log($('.action').html());
 				if ($('[data-index="' + index + '"]').text() === '') {
 					lineFormat = 'scene-heading';
 				}
 			} 
 
 			else if (lineFormat == 'character') {
-
-				console.log($('.character[data-index="' + index + '"]').text());
-
 				if ($('.character[data-index="' + index + '"]').text() === '') {
 					lineFormat = 'action';
-				} 
-
-				else {
-					console.log($('.character[data-index="' + index + '"]').text());
+				} else {
 					lineFormat = 'speech';
 				}
 			} 
 
 			else if (lineFormat == 'speech') {
-				lineFormat = 'character';
+				if ($('.speech[data-index="' + index + '"]').text() === '') {
+					lineFormat = 'action';
+				} else {
+					lineFormat = 'character';
+				}
 			}
 			
 			index = createNewElementWithFormat(lineFormat, index);
@@ -65,7 +62,6 @@ function formatText() {
 
 		if (e.keyCode == 9) {
 			e.preventDefault();
-			console.log('Tab key');
 
 			if (lineFormat == 'speech') {
 				lineFormat = 'parenthetical';
@@ -74,41 +70,52 @@ function formatText() {
 			if (lineFormat == 'action') {
 				lineFormat = 'character';
 			}
+
+			//On tab click the current line should be converted to a new format
+			//A new element should NOT be created 
 			convertElementToFormat('character');
-			//index = createNewElementWithFormat(lineFormat, index);
 			$('.footer').text(lineFormat);
 		}
 	});
 
+	//The first line of every document
 	innerPage.append('<p data-index=' + index + ' class="' + lineFormat + '"><br></p>');
-
-	console.log('<p class="' + lineFormat + '"><br></p>');
 }
+
+
+
+//Add a line right after the index with the specified input format
+//both provided as an argument
 function createNewElementWithFormat(inputFormat, dataIndex) {
 	var innerPage = $('.inner-page');
 	var prevTag = currentElement();
 	dataIndex++;
-	prevTag.after('<p data-index="' + dataIndex + '" class="' + inputFormat + '"><br></p>');
-	console.log('Appended tag with index: ' + dataIndex);
+	prevTag.after('<p contenteditable="true" data-index="' + dataIndex + '" class="' + inputFormat + '"><br></p>');
 	moveCursor(dataIndex);
-	console.log(dataIndex);
 	return dataIndex;
 }
+
+
+
+//Convert the element of the current line to the format
+//provided as an argument
 function convertElementToFormat(inputFormat) {
 	var currentTag = currentElement();
 	var currentClass = currentTag.attr('class');
-	console.log(currentClass);
 	currentTag.removeClass(currentClass);
 	currentTag.addClass(inputFormat);
 }
 
+
+
+//Moves the cursor to a certain element inside the page
+//based on their index provided as an agrument
 function moveCursor(index) {
-	console.log('Move cursor to index: ' + index);
 	var innerPage = $('.inner-page');
-	var nodeContents = innerPage.find('p[data-index="' + index + '"]')[0];
-	console.log(nodeContents);
+	console.log(innerPage);
+	var nodeContents = innerPage.find('p[data-index="' + index + '"]');
 	var range = document.createRange();
-	range.selectNodeContents(nodeContents);
+	range.selectNodeContents(nodeContents[0]);
 	range.collapse(true);
 	var sel = window.getSelection();
 	sel.removeAllRanges();
@@ -116,16 +123,29 @@ function moveCursor(index) {
 	$('.footer').text(lineFormat);
 }
 
+
+
+//Returns the element that the cursor is in 
+//in a jQuery object
 function currentElement() {
 	var sel = window.getSelection();
 	var	node = sel.anchorNode;
-
+	if (!node) {
+		return null;
+	}
 	if (node.textContent !== "") {
 		node = sel.anchorNode.parentElement;
-		console.log(node);
 	}
+
 	//Return jQuery object so it can be used with jQuery .after() 
 	var jObject = $('[data-index="' + node.dataset.index + '"]');
-	console.log(jObject);
 	return jObject;
+}
+
+
+
+//Returns the element version of the provided 
+//jQuery object
+function jQueryToElement(jQueryObject) {
+	return jQueryObject[0];
 }
