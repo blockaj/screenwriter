@@ -59,6 +59,7 @@ function formatText() {
 			
 			index = createNewElementWithFormat(lineFormat, index);
 			$('.footer').text(lineFormat);
+			
 		}
 	});
 
