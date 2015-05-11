@@ -11,10 +11,8 @@ function formatText() {
 
 	$('.parenthetical').append(')');
 
-	if (!lineFormat) {
-		lineFormat = 'scene-heading';
-	}
-
+	
+	lineFormat = setDefault(lineFormat, 'scene-heading');
 
 	//Set lineFormat in footer on start-up
 	$('.footer').text(lineFormat);
@@ -24,64 +22,52 @@ function formatText() {
 		$('.footer').text(lineFormat);
 	});
 
-	innerPage.keypress(function(e){
+	onEnter(function(){
+		if (lineFormat == 'scene-heading') {
+			lineFormat = 'action';
+		} 
 
-		if (e.keyCode == 13) {
-			e.preventDefault();
+		else if (lineFormat == 'action') {
+			if (currentLineIsEmptyContent()) {
+				lineFormat = 'scene-heading';
+			}
+		} 
 
-			if (lineFormat == 'scene-heading') {
+		else if (lineFormat == 'character') {
+			if (currentLineIsEmptyContent()) {
 				lineFormat = 'action';
-			} 
-
-			else if (lineFormat == 'action') {
-				if ($('[data-index="' + index + '"]').text() === '') {
-					lineFormat = 'scene-heading';
-				}
-			} 
-
-			else if (lineFormat == 'character') {
-				if ($('.character[data-index="' + index + '"]').text() === '') {
-					lineFormat = 'action';
-					convertElementToFormat(lineFormat);
-					return "";
-				} else {
-					lineFormat = 'speech';
-				}
-			} 
-
-			else if (lineFormat == 'speech') {
-				if ($('.speech[data-index="' + index + '"]').text() === '') {
-					lineFormat = 'action';
-				} else {
-					lineFormat = 'character';
-				}
+				convertElementToFormat(lineFormat);
+				return "";
+			} else {
+				lineFormat = 'speech';
 			}
-			
-			index = createNewElementWithFormat(lineFormat, index);
-			$('.footer').text(lineFormat);
-			
-		}
-	});
+		} 
 
-
-	innerPage.keydown(function(e){
-
-		if (e.keyCode == 9) {
-			e.preventDefault();
-
-			if (lineFormat == 'speech') {
-				lineFormat = 'parenthetical';
-			}
-
-			if (lineFormat == 'action') {
+		else if (lineFormat == 'speech') {
+			if (currentLineIsEmptyContent()) {
+				lineFormat = 'action';
+			} else {
 				lineFormat = 'character';
 			}
-
-			//On tab click the current line should be converted to a new format
-			//A new element should NOT be created 
-			convertElementToFormat('character');
-			$('.footer').text(lineFormat);
 		}
+			
+		index = createNewElementWithFormat(lineFormat, index);
+		$('.footer').text(lineFormat);
+	});
+
+	onTab(function() {
+		if (lineFormat == 'speech') {
+			lineFormat = 'parenthetical';
+		}
+
+		if (lineFormat == 'action') {
+			lineFormat = 'character';
+		}
+
+		//On tab click the current line should be converted to a new format
+		//A new element should NOT be created 
+		convertElementToFormat('character');
+		$('.footer').text(lineFormat);
 	});
 
 	//The first line of every document
@@ -157,4 +143,44 @@ function currentElement() {
 //jQuery object
 function jQueryToElement(jQueryObject) {
 	return jQueryObject[0];
+}
+
+
+
+function currentLineIsEmptyContent() {
+	return currentElement().text() === '';
+}
+
+
+
+//Set value for variable assuming it is undefined
+function setDefault(x, defaultVar) {
+	if (!x) {
+		x = defaultVar;
+	}
+	return x; 
+}
+
+
+
+//Accepts callback to be run once enter key is hit 
+function onEnter(cb) {
+	innerPage.keypress(function(e) {
+		if (e.keyCode == 13) {
+			e.preventDefault();
+			cb();
+		}
+	});
+}
+
+
+
+//Accepts callback to be run once tab key is hit
+function onTab(cb) {
+	innerPage.keydown(function(e){
+		if (e.keyCode == 9) {
+			e.preventDefault();
+			cb();
+		}
+	}) ;
 }
