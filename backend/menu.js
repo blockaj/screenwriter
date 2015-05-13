@@ -49,10 +49,18 @@ function menu(){
 										key: 'e',
 										modifiers: 'cmd',
 										click: function() {
-											alert('Exporting...');
+											exportPDF();
 										}}));
+	var format = new gui.MenuItem({ label: 'Format'});
+	var formatMenu = new gui.Menu({ type: 'contextmenu' });
+	formatMenu.append(new gui.MenuItem({ label: 'Title page',
+										click: function() {
+											alert('Edit title page');
+										}}));
+	format.submenu = formatMenu;
 
 
 	menubar.insert(file, 1);
+	menubar.insert(format, 2);
 	win.menu = menubar;
 }
