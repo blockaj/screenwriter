@@ -11,14 +11,16 @@ function formatText() {
 
 	$('.parenthetical').append(')');
 
-	
-	lineFormat = setDefault(lineFormat, 'scene-heading');
+	//If lineFormat is not defined yet, set it to the default: 'scene-heading'
+	if (!lineFormat) {
+		lineFormat = 'scene-heading';
+	}
 
 	//Set lineFormat in footer on start-up
 	$('.footer').text(lineFormat);
 	innerPage.click(function(){
-		lineFormat = jQueryToElement(currentElement()).className;
-		index = jQueryToElement(currentElement()).dataset.index;
+		lineFormat = setCurrentLineFormat();
+		index = setCurrentIndex();
 		$('.footer').text(lineFormat);
 	});
 
@@ -82,11 +84,13 @@ function createNewElementWithFormat(inputFormat, dataIndex) {
 	var innerPage = $('.inner-page');
 	var prevTag = currentElement();
 	dataIndex++;
+
 	prevTag.after('<p contenteditable="true" data-index="' + dataIndex + '" class="' + inputFormat + '"><br></p>');
 	moveCursor(dataIndex);
 	if (inputFormat == 'character') {
 		giveCharacterSuggestions(currentElement());
 	}
+	
 	return dataIndex;
 }
 
@@ -99,6 +103,9 @@ function convertElementToFormat(inputFormat) {
 	var currentClass = currentTag.attr('class');
 	currentTag.removeClass(currentClass);
 	currentTag.addClass(inputFormat);
+	if (inputFormat == 'character') {
+		giveCharacterSuggestions(currentElement());
+	}
 }
 
 
@@ -153,18 +160,9 @@ function currentLineIsEmptyContent() {
 
 
 
-//Set value for variable assuming it is undefined
-function setDefault(x, defaultVar) {
-	if (!x) {
-		x = defaultVar;
-	}
-	return x; 
-}
-
-
-
 //Accepts callback to be run once enter key is hit 
 function onEnter(cb) {
+	var innerPage = $('.inner-page');
 	innerPage.keypress(function(e) {
 		if (e.keyCode == 13) {
 			e.preventDefault();
@@ -177,10 +175,25 @@ function onEnter(cb) {
 
 //Accepts callback to be run once tab key is hit
 function onTab(cb) {
+	var innerPage = $('.inner-page');
 	innerPage.keydown(function(e){
 		if (e.keyCode == 9) {
 			e.preventDefault();
 			cb();
 		}
 	}) ;
+}
+
+
+
+//Set the lineFormat for the doc according to the current element
+function setCurrentLineFormat() {
+	return jQueryToElement(currentElement()).className;
+}
+
+
+
+//Set the index for the doc according to the current element
+function setCurrentIndex() {
+	return jQueryToElement(currentElement()).dataset.index;
 }
