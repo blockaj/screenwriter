@@ -9,6 +9,8 @@
 		"icon": "/icon.png"
 	},
 	"dependencies": {
-		"node-webkit-fdialogs": "*"
+		"node-webkit-fdialogs": "*",
+		"lodash": "*",
+		"html-pdf": "*"
 	}
 }
