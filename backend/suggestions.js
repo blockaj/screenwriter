@@ -5,7 +5,6 @@ function giveCharacterSuggestions(characterElement) {
 		'Alvin'
 	];
 
-	console.log(getSuggestions(currentElement(), availableTags));
 
 }
 
@@ -14,21 +13,35 @@ function giveCharacterSuggestions(characterElement) {
 function getSuggestions(el, availableTags) {
 	var suggestions = [];
 	console.log(currentElement());
-	currentElement().keypress(function() {
+	$('.inner-page').keypress(function() {
 		var content = el.text();
 		console.log(content);
 		_.forEach(availableTags, function(tag) {
+			tag = tag.toLowerCase();
+			content = content.toLowerCase();
 			var suggest = tag.indexOf(content) != -1;
 			console.log(suggest);
 			if (suggest) {
-				suggestions.push(tag);
+				var doesNotAlreadyExist = suggestions.indexOf(tag) == -1;
+				if (doesNotAlreadyExist) {
+					suggestions.push(tag);
+				}
+				console.log(suggestions);
+			} else {
+				var alreadyExists = suggestions.indexOf(tag) != -1;
+				if (alreadyExists) {
+					var index = suggestions.indexOf(tag);
+					suggestions.splice(index, 1);
+				}
 			}
 		});
 	});
-	console.log(suggestions);
-	return suggestions;
 }
 
+
+function allCharacters(doc) {
+	
+}
 
 
 function giveSceneHeadingSuggestions(shElement) {
