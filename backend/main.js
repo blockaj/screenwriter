@@ -22,6 +22,5 @@ $(function(){
 	});
 	menu();
 	document.title = currentDocument.title;
-	formatToJSON();
 	formatText();
 });

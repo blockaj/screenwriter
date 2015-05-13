@@ -25,7 +25,7 @@ function saveAs() {
 //Save file
 function save(file) {
 	if (currentDocument.savedAs){
-		fs.writeFile(file, getUnsavedContent(), function(err){
+		fs.writeFile(file, createContentBuffer(), function(err){
 			if (err) {
 				console.log(err);
 			}
@@ -66,6 +66,14 @@ function newDoc() {
 
 //Returns content of the page to a buffer for saving
 function getUnsavedContent() {
+	var innerPage = $('.inner-page');
+	innerPage = innerPage[0];
+	return innerPage.children;
+}
+
+
+
+function createContentBuffer() {
 	var content;
 	content = JSON.stringify(formatToJSON());
 	contentBuffer = new Buffer(content, 'utf-8');

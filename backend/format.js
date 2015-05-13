@@ -1,14 +1,15 @@
 function formatToJSON() {
 	var file = {};
 	file.scenes = [];
-	var innerPage = $('.inner-page');
-	innerPage = innerPage[0].children;
+	innerPage = getUnsavedContent();
+	console.log(innerPage);
 
 	//Loop through every p-tag in inner-page class
 	_.forEach(innerPage, function(p){
 		var className = p.className;
 		var index = p.dataset.index;
 		var jsonClass = htmlClassToJSON(className);
+		
 		//JSON object holding one line in the screenplay
 		var newItem = {
 			'type': jsonClass,
