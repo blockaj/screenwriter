@@ -4,9 +4,9 @@ Screenwriter is a free solution to the lack of quality screenwriting application
 ![Screenshot](screenshot.png)
 ##Features
 -[] Format text like screenplay
-    -[x]    Format character, scene headings, dialogue, etc. 
+    -[x] Format character, scene headings, dialogue, etc. 
     -[] Add page numbers
--[x]   Export to pdf 
+-[x] Export to pdf 
 -[] Print
 -[] Version control
 ##Contributing
