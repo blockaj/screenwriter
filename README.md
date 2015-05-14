@@ -1,5 +1,5 @@
 #Screenwriter
-Screenwriter is a free solution to the lack of quality screenwriting applications.
+Screenwriter is a free solution to the lack of quality screenwriting applications. If you just want the latest build of Screenwriter go [here](http://blockaj.github.io/screenwriter)
 It's goal is to be simple and easy to use without a clunky interface. 
 ![Screenshot](screenshot.png)
 ##Changelog
