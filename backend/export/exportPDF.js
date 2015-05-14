@@ -13,7 +13,7 @@ function chooseFile(name) {
 			filename: pdfDocument, 
 			format: 'Letter',  
 			"border": {
- 				"top": "1in",            // default is 0, units: mm, cm, in, px 
+				"top": "1in",            
     			"right": "1in",
     			"bottom": "1in",
     			"left": "1.5in"
@@ -41,6 +41,8 @@ function addCSS() {
 function getPageContent() {
 	var css = addCSS();
 	var page = $('.inner-page').html();
+	var pageHeight = page.innerHeight();
+	
 	var a = String(page);
 
 	var returnValue = '<style>' + css + '</style>' + a;
