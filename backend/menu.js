@@ -1,4 +1,3 @@
-module.exports = 55;
 function menu(){
 	var win = gui.Window.get();
 	win.position = 'center';
@@ -56,12 +55,17 @@ function menu(){
 	var formatMenu = new gui.Menu({ type: 'contextmenu' });
 	formatMenu.append(new gui.MenuItem({ label: 'Title page',
 										click: function() {
-											alert('Edit title page');
+											var new_win = gui.Window.open('../html/title_page.html', {
+												position: "center",
+												height: 660,
+												width: 816,
+												toolbar: false
+											});
 										}}));
 	format.submenu = formatMenu;
 
 
 	menubar.insert(file, 1);
-	menubar.insert(format, 2);
+	menubar.insert(format, 3);
 	win.menu = menubar;
 }
