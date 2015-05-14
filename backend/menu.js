@@ -1,3 +1,4 @@
+module.exports = 55;
 function menu(){
 	var win = gui.Window.get();
 	win.position = 'center';

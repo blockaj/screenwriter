@@ -1,18 +1,17 @@
 <html>
 	<head>
 		<title></title>
-		<link rel="stylesheet" href="../../backend/jquery-ui-1.11.4/jquery-ui.css" />
 		<link rel="stylesheet" href="../css/reset.css" />
 		<link rel="stylesheet" href="../css/main.css" />
 		<script src="../../backend/jquery-2.1.3.min.js"></script>
-		<script src="../../backend/jquery-ui-1.11.4/jquery-ui.js"></script>
 		<script src="../../backend/format.js"></script>
 		<script src="../../backend/suggestions.js"></script>
 		<script src="../../backend/pagination.js"></script>
-		<script src="../../backend/exportPDF.js"></script>
+		<script src="../../backend/export/exportPDF.js"></script>
 		<script src="../../backend/documents.js"></script>
 		<script src="../../backend/handler.js"></script>
 		<script src="../../backend/menu.js"></script>
+		<script src="../../backend/req.js"></script>
 		<script src="../../backend/main.js"></script>
 		<script>
 			var win = gui.Window.get();
@@ -20,6 +19,7 @@
 		</script>
 	</head>
 	<body>
+		<input type="file" style="display:none;" id="fileDialog" nwsaveas />
 		<div class="document-container">
 			<div class="page" data-pageNumber="1">
 				<div class="inner-page" id="inner" contenteditable="true">

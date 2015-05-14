@@ -3,7 +3,6 @@ var gui = require('nw.gui'),
 	fdialogs = require('node-webkit-fdialogs'),
 	_ = require('lodash'),
 	VerEx = require('verbal-expressions');
-var endOfClass = VerEx().find('class="').anything().then('">');
 var lineFormat;
 
 var saveDialog = new fdialogs.FDialog({
@@ -17,9 +16,6 @@ var saveDialog = new fdialogs.FDialog({
 
 
 $(function(){
-	$('.character').autocomplete({
-		source: ['Arnie', 'Alvin']
-	});
 	menu();
 	document.title = currentDocument.title;
 	formatText();
