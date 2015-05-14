@@ -6,6 +6,7 @@ Screenwriter is a free solution to the lack of quality screenwriting application
 *   [Contributing](#contributing)
 *   [Changelog](#changelog)
 ![Screenshot](screenshot.png)
+
 ##Features
 -[ ] Format text like screenplay
     -[x] Format character, scene headings, dialogue, etc. 
