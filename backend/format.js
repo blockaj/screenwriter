@@ -1,8 +1,20 @@
 function formatToJSON() {
 	var file = {};
+	file.title = [];
 	file.scenes = [];
-	innerPage = getUnsavedContent();
-	console.log(innerPage);
+
+	innerPage = getUnsavedContent()[0];
+	titlePage = getUnsavedContent()[1];
+
+	_.forEach(titlePage, function(el) {
+		var className = el.className;
+		var newItem = {
+			'type': className,
+			'text': el.innerText
+		};
+
+		file.title.push(newItem);
+	});	
 
 	//Loop through every p-tag in inner-page class
 	_.forEach(innerPage, function(p){
@@ -26,32 +38,40 @@ function formatToJSON() {
 
 function formatToHTML(file) {
 	var characterList = [];
-	var htmlFile = "";
+	var mainPage = "";
+	var titlePage = "";
 	try {
 		file = JSON.parse(file);
 	}
 	catch(e) {
 		console.trace(e);
 	}
+	_.forEach(file.title, function(line) {
+		if (line.type == 'title') {
+			titlePage = titlePage.concat('<h1 class="title">' + line.text + '</h1>');
+		} else {
+			titlePage = titlePage.concat('<p class="' + line.type + '">' + line.text + '</p>');
+		}
+	});
 	_.forEach(file.scenes, function(line){
 		if(line.type == 'sceneHeading') {
-			htmlFile = htmlFile.concat('<p class="scene-heading" data-index="' + line.index + '">' + line.text + '</p>');
+			mainPage = mainPage.concat('<p class="scene-heading" data-index="' + line.index + '">' + line.text + '</p>');
 		} 
 		if (line.type == 'action') {
-			htmlFile = htmlFile.concat('<p class="action" data-index="' + line.index + '">' + line.text + '</p>');
+			mainPage = mainPage.concat('<p class="action" data-index="' + line.index + '">' + line.text + '</p>');
 		} 
 		if (line.type == 'character') {
-			htmlFile = htmlFile.concat('<p class="character" data-index="' + line.index + '">' + line.text + '</p>');
+			mainPage = mainPage.concat('<p class="character" data-index="' + line.index + '">' + line.text + '</p>');
 			var characterExists = false;
 		}
 		if (line.type == 'paranthetical') {
-			htmlFile = htmlFile.concat('<p class="parenthetical" data-index="' + line.index + '">' + line.text + '</p>');
+			mainPage = mainPage.concat('<p class="parenthetical" data-index="' + line.index + '">' + line.text + '</p>');
 		}
 		if (line.type == 'speech') {
-			htmlFile = htmlFile.concat('<p class="speech" data-index="' + line.index + '">' + line.text + '</p>');
+			mainPage = mainPage.concat('<p class="speech" data-index="' + line.index + '">' + line.text + '</p>');
 		}
 	});
-	return htmlFile;
+	return [mainPage, titlePage];
 }
 
 

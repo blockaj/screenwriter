@@ -3,7 +3,6 @@ function menu(){
 	win.position = 'center';
 	win.y = 30;
 	var menubar = new gui.Menu({ type: 'menubar' });
-	win.showDevTools();
 	menubar.createMacBuiltin('Screenwriter');
 	var file = new gui.MenuItem({ label: 'File' });
 

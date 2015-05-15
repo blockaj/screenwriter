@@ -24,13 +24,19 @@ function saveAs() {
 
 //Save file
 function save(file) {
+
+	//If the documents has already been saved and 
+	//has been given a file name and path
 	if (currentDocument.savedAs){
+
 		fs.writeFile(file, createContentBuffer(), function(err){
 			if (err) {
 				console.log(err);
 			}
-		});
-	} else {
+		});	
+	} 
+
+	else {
 		saveAs();
 	}
 }
@@ -40,11 +46,13 @@ function save(file) {
 function open() {
 	openDialog.readFile(function(err, data, path){
 		data = data.toString();
-		htmlData = formatToHTML(data);
+		htmlData = formatToHTML(data)[0];
+		titleData = formatToHTML(data)[1];
 
 		//.inner-page is the div where all of the text is stored so we will place
 		//the formated html of the document there
 		$(".inner-page").html(htmlData);
+		$(".title-page").html(titleData);
 
 		//Reset the title of the window to be the title of the document
 		document.title = getDocumentName(path).fileName;
@@ -67,8 +75,11 @@ function newDoc() {
 //Returns content of the page to a buffer for saving
 function getUnsavedContent() {
 	var innerPage = $('.inner-page');
+	var titlePage = $('.title-page');
+	console.log(titlePage);
+	titlePage = titlePage[0];
 	innerPage = innerPage[0];
-	return innerPage.children;
+	return [innerPage.children, titlePage.children];
 }
 
 
@@ -101,6 +112,7 @@ function getDocumentName(filePath) {
 	//'.' and creating a subsring that ends right before the '.' 
 	for (i = 0; i < fileNameWithExtension.length; i++) {
 		var currentCharacter = fileNameWithExtension[i];
+
 		if (currentCharacter == '.') {
 			fileName = fileNameWithExtension.substring(0, i);
 		}
