@@ -1,8 +1,7 @@
 var gui = require('nw.gui'),
 	fs = require('fs'),
 	fdialogs = require('node-webkit-fdialogs'),
-	_ = require('lodash'),
-	VerEx = require('verbal-expressions');
+	_ = require('lodash');
 var lineFormat;
 
 var saveDialog = new fdialogs.FDialog({
